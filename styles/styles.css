@@ -1,6 +1,5 @@
 #roundedImage {
     border-radius: 10px;
-}
-.container {
-    background-image: url("../images/pattern.jpg");
+    padding: 0;
+    margin: 0;
 }
