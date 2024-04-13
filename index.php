@@ -1,4 +1,6 @@
 <?php
+//BRENDEN HASKINS 4/13/24: PHP controller, defines basic routes, dependencies, and starts f3.
+
 //error reporting
 ini_set('display_errors',1);
 error_reporting(E_ALL);
