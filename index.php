@@ -14,15 +14,28 @@ require_once('vendor/autoload.php');
 //instantiate base F3 base class
 $f3 = Base::instance();
 
+//associate javascript
+$f3->set('js_file','scripts/scripts.js');
+
 //define default route
 $f3->route('GET /', function(){
     $view = new Template();
     echo $view->render('views/home.html');
 });
 
-$f3->route('GET /personal', function(){
-    $view = new Template();
-    echo $view->render('views/personal.html');
+$f3->route('GET|POST /personal', function($f3){
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $f3->set('SESSION.fname',$_POST['fname']);
+        $f3->set('SESSION.lname',$_POST['lname']);
+        $f3->set('SESSION.state',$_POST['state']);
+        $f3->set('SESSION.email',$_POST['email']);
+        $f3->set('SESSION.phone',$_POST['phone']);
+
+        $f3->reroute("experience");
+    }else {
+        $view = new Template();
+        echo $view->render('views/personal.html');
+    }
 });
 //run fat free
 $f3->run();
