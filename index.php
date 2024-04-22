@@ -37,5 +37,20 @@ $f3->route('GET|POST /personal', function($f3){
         echo $view->render('views/personal.html');
     }
 });
+
+$f3->route('GET|POST /experience', function($f3){
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $f3->set('SESSION.fname',$_POST['fname']);
+        $f3->set('SESSION.lname',$_POST['lname']);
+        $f3->set('SESSION.state',$_POST['state']);
+        $f3->set('SESSION.email',$_POST['email']);
+        $f3->set('SESSION.phone',$_POST['phone']);
+
+        $f3->reroute("experience");
+    }else {
+        $view = new Template();
+        echo $view->render('views/experience.html');
+    }
+});
 //run fat free
 $f3->run();
