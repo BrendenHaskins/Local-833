@@ -121,7 +121,7 @@
         <check if="{{ @SESSION.errorPresent }}">
             <true>
                 <repeat group="{{ @SESSION.errorMessages }}" value="{{ @error }}">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger my-3" role="alert">
                         Could not submit: {{ @error }}
                     </div>
                 </repeat>
