@@ -10,6 +10,7 @@ error_reporting(E_ALL);
 
 //requirements
 require_once('vendor/autoload.php');
+require 'model/validate.php';
 
 //instantiate base F3 base class
 $f3 = Base::instance();
@@ -25,13 +26,39 @@ $f3->route('GET /', function(){
 
 $f3->route('GET|POST /personal', function($f3){
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $f3->set('SESSION.fname',$_POST['fname']);
-        $f3->set('SESSION.lname',$_POST['lname']);
-        $f3->set('SESSION.state',$_POST['state']);
-        $f3->set('SESSION.email',$_POST['email']);
-        $f3->set('SESSION.phone',$_POST['phone']);
+        $validFirstName = validName($_POST['fname']);
+        $validLastName = validName($_POST['lname']);
+        $validEmail = validEmail($_POST['email']);
+        $validPhone = validPhone($_POST['phone']);
 
-        $f3->reroute("experience");
+
+        $f3->set('SESSION.errorPresent', true);
+        $errorMessages = array();
+        if(!$validFirstName){
+            $errorMessages[] = "First name cannot contain digits.";
+        } else if(!$validLastName){
+            $errorMessages[] = "Last name cannot contain digits.";
+        } else if(!$validEmail){
+            $errorMessages[] = "Email is invalid.";
+        } else if(!$validPhone){
+            $errorMessages[] = "Phone number must be 10 or 11 numbers.";
+        }else {
+            $f3->set('SESSION.errorPresent', false);
+
+            $f3->set('SESSION.fname',$_POST['fname']);
+            $f3->set('SESSION.lname',$_POST['lname']);
+            $f3->set('SESSION.state',$_POST['state']);
+            $f3->set('SESSION.email',$_POST['email']);
+            $f3->set('SESSION.phone',$_POST['phone']);
+
+            $f3->reroute("experience");
+        }
+
+        if($f3->get('SESSION.errorPresent')) {
+            $f3->set('SESSION.errorMessages',$errorMessages);
+            $f3->reroute("personal");
+        }
+
     }else {
         $view = new Template();
         echo $view->render('views/personal.html');
@@ -40,13 +67,36 @@ $f3->route('GET|POST /personal', function($f3){
 
 $f3->route('GET|POST /experience', function($f3){
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $f3->set('SESSION.bio',$_POST['bio']);
-        $f3->set('SESSION.linkedIn',$_POST['linkedIn']);
-        $f3->set('SESSION.exp',$_POST['exp']);
-        $f3->set('SESSION.relocate',$_POST['relocate']);
+        $validExperience = validExperience($_POST['exp']);
+        $validLink = validLink($_POST['linkedIn']);
 
-        $f3->reroute("openings");
-    }else {
+        $f3->set('SESSION.errorPresent', true);
+        $errorMessages = array();
+        if(!$validExperience){
+            $errorMessages[] = "Experience invalid.";
+        } else if(!$validLink){
+            $errorMessages[] = "LinkedIn URL invalid.";
+        } else {
+            $f3->set('SESSION.errorPresent', false);
+
+
+            $f3->set('SESSION.bio', $_POST['bio']);
+            $f3->set('SESSION.linkedIn', $_POST['linkedIn']);
+            $f3->set('SESSION.exp', $_POST['exp']);
+            $f3->set('SESSION.relocate', $_POST['relocate']);
+
+            $f3->reroute("openings");
+        }
+
+        if($f3->get('SESSION.errorPresent')) {
+            $f3->set('SESSION.errorMessages',$errorMessages);
+            $f3->reroute("experience");
+        }
+
+
+
+    }
+    else {
         $view = new Template();
         echo $view->render('views/experience.html');
     }

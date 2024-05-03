@@ -118,6 +118,15 @@
             </div>
 
         </form>
+        <check if="{{ @SESSION.errorPresent }}">
+            <true>
+                <repeat group="{{ @SESSION.errorMessages }}" value="{{ @error }}">
+                    <div class="alert alert-danger" role="alert">
+                        Could not submit: {{ @error }}
+                    </div>
+                </repeat>
+            </true>
+        </check>
 
     </div>
 </div>

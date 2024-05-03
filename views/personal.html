@@ -37,17 +37,17 @@
                 <form id="personalForm" method="post" class="row g-3" action="#">
                     <div class="col-6">
                         <label class="form-label" for="fname">First Name</label>
-                        <input type="text" class="form-control" name="fname" id="fname">
+                        <input type="text" class="form-control" name="fname" id="fname" required>
                     </div>
 
                     <div class="col-6">
                         <label class="form-label" for="lname">Last Name</label>
-                        <input type="text" class="form-control" name="lname" id="lname">
+                        <input type="text" class="form-control" name="lname" id="lname" required>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label" for="email">Email Address</label>
-                        <input type="email" class="form-control" name="email" id="email">
+                        <input type="email" class="form-control" name="email" id="email" required>
                     </div>
                     <div class="col-6">
                         <label class="form-label" for="state">State</label>
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-6">
                         <label class="form-label" for="phone">Phone</label>
-                        <input type="tel" class="form-control" name="phone" id="phone">
+                        <input type="tel" class="form-control" name="phone" id="phone" placeholder="No symbols! ex. 2533344323" required>
                     </div>
                 </form>
             </div>
@@ -130,6 +130,15 @@
 
             </div>
         </div>
+        <check if="{{ @SESSION.errorPresent }}">
+            <true>
+                <repeat group="{{ @SESSION.errorMessages }}" value="{{ @error }}">
+                    <div class="alert alert-danger" role="alert">
+                        Could not submit: {{ @error }}
+                    </div>
+                </repeat>
+            </true>
+        </check>
     </div>
 </div>
 </body>
