@@ -30,27 +30,33 @@
 
     <div id="postNavbar" class="row">
         <div class="col-6">
-            <p>Name: {{ @SESSION.fname }} {{ @SESSION.lname }}</p>
+            <p>Name: {{ @SESSION.object->getFname() }} {{ @SESSION.object->getLname() }}</p>
             <hr>
-            <p>State: {{ @SESSION.state }}</p>
+            <p>State: {{ @SESSION.object->getState() }}</p>
             <hr>
-            <p>Email: {{ @SESSION.email }}</p>
+            <p>Email: {{ @SESSION.object->getEmail() }}</p>
             <hr>
-            <p>Phone: {{ @SESSION.phone }}</p>
+            <p>Phone: {{ @SESSION.object->getPhone() }}</p>
             <hr>
-            <p>LinkedIn: {{ @SESSION.linkedIn }}</p>
+            <p>LinkedIn: {{ @SESSION.object->getLink() }}</p>
             <hr>
-            <p>Experience: {{ @SESSION.exp }}</p>
+            <p>Experience: {{ @SESSION.object->getExperience() }}</p>
             <hr>
-            <p>Willing to Relocate: {{ @SESSION.relocate }}</p>
+            <p>Willing to Relocate: {{ @SESSION.object->getRelocate() }}</p>
             <hr>
-            <p>Mailing List: {{ implode(', ', @SESSION.positions) }}</p>
+            <check if="{{ @SESSION.mailing == 'mailing' }}">
+                <true>Added to the mailing list!
+                    <p>Industry Verticals: {{ implode(', ', @SESSION.object->getSelectionsVerticals()) }}</p>
+                    <p>Other Jobs: {{ implode(', ', @SESSION.object->getSelectionsJobs()) }}</p>
+                </true>
+            </check>
+
         </div>
 
 
         <div class="col-6">
             <h4>Biography:</h4>
-            <p>{{ @SESSION.bio }}</p>
+            <p>{{ @SESSION.object->getBio() }}</p>
         </div>
     </div>
 
