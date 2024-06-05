@@ -113,9 +113,13 @@ class Applicant
         return $this->_relocate;
     }
 
-    public function setRelocate(string $relocate): void
+    public function setRelocate($relocate): void
     {
-        $this->_relocate = $relocate;
+        if(!is_null($relocate)){
+            $this->_relocate = $relocate;
+        } else {
+            $this->_relocate = "Did not answer";
+        }
     }
 
     public function getBio(): string
